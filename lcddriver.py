@@ -72,7 +72,7 @@ class lcd:
     self.write(LCD_DISPLAYCONTROL | LCD_DISPLAYON)
     self.write(LCD_CLEARDISPLAY)
     self.write(LCD_ENTRYMODESET | LCD_ENTRYLEFT)
-#    self.write(LCD_ENTRYMODESET | LCD_ENTRYRIGHT | 0x00)
+#   self.write(LCD_ENTRYMODESET | LCD_ENTRYRIGHT | 0x00)
     sleep(0.2)
 
   def strobe(self, data):
@@ -85,6 +85,12 @@ class lcd:
   def write_four_bits(self, data):
     self.device.write_cmd(data | LCD_BACKLIGHT)
     self.strobe(data)
+
+  # write a character to lcd (or character rom) 0x09: backlight | RS=DR<
+  # works!
+  def write_char(self, charvalue, mode=1):
+    self.write_four_bits(mode | (charvalue & 0xF0))
+    self.write_four_bits(mode | ((charvalue << 4) & 0xF0))
 
   def write(self, cmd, mode=0):
     """write a command to lcd"""
@@ -109,9 +115,34 @@ class lcd:
     self.write(LCD_CLEARDISPLAY)
     self.write(LCD_RETURNHOME)
 
-  def backlight_off(self):
-    """turn off backlight, anything that calls write turns it on again"""
-    self.device.write_cmd(LCD_NOBACKLIGHT)
+	# define backlight on/off (lcd.backlight(1); off= lcd.backlight(0)
+  def backlight(self, state): # for state, 1 = on, 0 = off
+    if state == 1:
+      self.device.write_cmd(LCD_BACKLIGHT)
+    elif state == 0:
+      self.device.write_cmd(LCD_NOBACKLIGHT)
+
+  # add custom characters (0 - 7)
+  def load_custom_chars(self, fontdata):
+    self.write(0x40);
+    for char in fontdata:
+      for line in char:
+        self.write_char(line)
+
+  # define precise positioning (addition from the forum)
+  def display_string_pos(self, string, line, pos):
+    if line == 1:
+      pos_new = pos
+    elif line == 2:
+      pos_new = 0x40 + pos
+    elif line == 3:
+      pos_new = 0x14 + pos
+    elif line == 4:
+      pos_new = 0x54 + pos
+    self.write(0x80 + pos_new)
+
+    for char in string:
+      self.write(ord(char), Rs)
 
   def display_off(self):
     """turn off the text display"""
