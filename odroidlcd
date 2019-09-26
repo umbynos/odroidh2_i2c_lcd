@@ -14,7 +14,7 @@
 DESC="odroidlcd"
 NAME=odroidlcd
 PIDFILE=/var/run/$NAME.pid
-COMMAND="/usr/bin/python3 /home/odroidlcd/hello_world.py"
+COMMAND="/usr/bin/python3 /home/odroidlcd/sys_monitor_lcd.py"
 RUN_AS=root
 
 d_start() {

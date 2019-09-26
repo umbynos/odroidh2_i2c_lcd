@@ -4,7 +4,7 @@
 - i2c-tools git python3-dev libi2c-dev python3-smbus python3-psutil lm-sensors hdparm
 
 ## How to run?
-- nohup python3 hello_world.py &
+- nohup python3 sys_monitor_lcd.py &
 
 ## How to setup? 
 - chmod a+x install.sh
