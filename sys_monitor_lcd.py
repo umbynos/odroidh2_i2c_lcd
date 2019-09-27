@@ -41,8 +41,8 @@ lcd.load_custom_chars(fontdata)
 
 sleep(1)
 
-prev_rx_speed = 0
-prev_tx_speed = 0
+prev_rx_speed = prev_tx_speed = 0
+net_if = 'enp2s0'
 
 #change here to sda sdb sdc etc
 disk1_to_check="mmcblk0p2"
@@ -60,12 +60,6 @@ def disk_exists(path):
 		return stat.S_ISBLK(os.stat(path).st_mode)
 	except:
 		return False
-
-# network status get function
-def get_bytes(t, iface='enp2s0'):
-	with open('/sys/class/net/' + iface + '/statistics/' + t + '_bytes', 'r') as f:
-		data = f.read();
-		return int(data)
 
 # return simbol to use regarding the disks status to print on the LCD
 def get_symbol_disk(path):
@@ -138,12 +132,12 @@ try:
 			obj_Disk2 = ps.disk_usage(path_disk2)
 			lcd.display_string_pos(str(round(obj_Disk2.percent)), 2,6)
 
-			tx1 = get_bytes('tx')
-			rx1 = get_bytes('rx')
+			tx1 = ps.net_io_counters(pernic=True)[net_if].bytes_sent
+			rx1 = ps.net_io_counters(pernic=True)[net_if].bytes_recv
 			delay = 0.96
 			sleep(delay)
-			tx2 = get_bytes('tx')
-			rx2 = get_bytes('rx')
+			tx2 = ps.net_io_counters(pernic=True)[net_if].bytes_sent
+			rx2 = ps.net_io_counters(pernic=True)[net_if].bytes_recv
 			tx_speed = (tx2 - tx1)/1048576.0/delay
 			rx_speed = (rx2 - rx1)/1048576.0/delay
   
