@@ -15,9 +15,15 @@ if [ "i2c-dev" != "$MODULE" ];then
   sleep 1
 fi
 
-echo "# download LCD python code..."
+echo "# checking previus installation.."
 sleep 1
-mkdir -p /home/odroidlcd
+DIR="/home/odroidlcd/"
+if [ -d "$DIR" ]; then
+  echo "removing previous installation.."
+  rm -rf "$DIR"
+fi
+echo "# download LCD python code.."
+mkdir -p "$DIR"
 git clone https://github.com/umbynos/odroidh2_i2c_lcd /home/odroidlcd
 
 echo "# detect i2c ports.."
