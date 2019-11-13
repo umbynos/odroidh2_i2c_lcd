@@ -15,7 +15,7 @@ if [ "i2c-dev" != "$MODULE" ];then
   sleep 1
 fi
 
-echo "# checking previus installation.."
+echo "# checking previous installation.."
 sleep 1
 DIR="/home/odroidlcd/"
 if [ -d "$DIR" ]; then

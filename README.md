@@ -17,8 +17,7 @@
 - service odroidlcd restart
 
 ## Examples
-![Alt text](https://t1.daumcdn.net/cfile/tistory/997F52475C041C7203)
-![Alt text](https://t1.daumcdn.net/cfile/tistory/99A9C8465C041C7204)
+[images]
 
 https://www.youtube.com/watch?v=-pe44TYmeIk
 
