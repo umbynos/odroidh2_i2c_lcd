@@ -42,14 +42,14 @@ lcd.load_custom_chars(fontdata)
 sleep(1)
 
 prev_rx_speed = prev_tx_speed = 0
-net_if = 'enp2s0'
+net_if = 'enp3s0'
 
 #change here to sda sdb sdc etc
 disk1_to_check="mmcblk0p2"
 #change here to partition full name for pct usage, check with "df -h"
 path_disk1="/"
 disk2_to_check="sdb1"
-path_disk2="/mnt/3tb"
+path_disk2="/media/umbynos/SAMSUNG"
 
 #offsets 1 char to the right if the first disk starts with "nvme"
 nvmeoffset = 0 if disk1_to_check[0:4]!="nvme" else 1
@@ -149,7 +149,7 @@ try:
 		prev_rx_speed = rx_speed
 
 		#IP & time
-		lcd.display_string("IP %s" %ps.net_if_addrs()['enp2s0'][0].address,1)
+		lcd.display_string("IP %s" %ps.net_if_addrs()[net_if][0].address,1)
 		lcd.display_string("T                 " + chr(8),2)
 		for x in range(WAIT_TIME):
 			cpu_temp = ps.sensors_temperatures()['coretemp'][0].current
